@@ -1,191 +1,168 @@
 import React, { useMemo } from 'react';
-
 import profileConfig from '../config/profileConfig.json';
 import { useUserProfile } from '../context/UserProfileContext';
 
-interface ContributionChartProps {
+type ChartProps = {
   selectedYear?: number;
-}
+};
 
-interface ContributionCell {
-  count: number;
+type DayCell = {
   date: string;
-  isInYear: boolean;
-}
+  value: number;
+  valid: boolean;
+};
 
-interface MonthLabel {
-  label: string;
-  position: number;
-}
+type MonthMark = {
+  name: string;
+  weekIndex: number;
+};
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const SIDE_DAYS = ['Mon', 'Wed', 'Fri'];
 
-
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const displayedDayLabels = ['Mon', 'Wed', 'Fri'];
-
-const ContributionChart: React.FC<ContributionChartProps> = ({ selectedYear: propSelectedYear }) => {
+const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
   const { contributions } = useUserProfile();
-  const { contributions: contributionTexts } = profileConfig.texts;
-  const currentYear = new Date().getFullYear();
-  const selectedYear = propSelectedYear ?? currentYear;
+  const { contributions: text } = profileConfig.texts;
 
-  const contributionData = useMemo(() => {
-    if (contributions?.contributions?.length) {
-      return contributions.contributions;
-    }
-    return [];
-  }, [contributions]);
+  const year = selectedYear ?? new Date().getFullYear();
+  const rawData = contributions?.contributions ?? [];
 
-  const { weeks, totalContributions, monthLabels } = useMemo(() => {
-    const dataMap = new Map<string, number>();
-    let total = 0;
-    contributionData.forEach((day) => {
-      dataMap.set(day.date, day.count);
-      total += day.count;
+  const { grid, total, months } = useMemo(() => {
+    const countByDate = new Map<string, number>();
+    let sum = 0;
+
+    rawData.forEach(item => {
+      countByDate.set(item.date, item.count);
+      sum += item.count;
     });
 
-    const startDate = new Date(selectedYear, 0, 1);
-    const firstDay = new Date(startDate);
-    const dayOfWeek = firstDay.getDay();
-    const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    firstDay.setDate(firstDay.getDate() + daysToMonday);
+    const firstJan = new Date(year, 0, 1);
+    const start = new Date(firstJan);
+    const shift = start.getDay() === 0 ? -6 : 1 - start.getDay();
+    start.setDate(start.getDate() + shift);
 
-    const weeks: ContributionCell[][] = [];
-    const monthLabels: MonthLabel[] = [];
-    const seenMonths = new Set<number>();
+    const weeks: DayCell[][] = [];
+    const monthLabels: MonthMark[] = [];
+    const addedMonths = new Set<number>();
 
-    const cursor = new Date(firstDay);
-    let weekIndex = 0;
+    const cursor = new Date(start);
+    let weekPos = 0;
 
     while (true) {
-      const week: ContributionCell[] = [];
-      let hasYearDays = false;
+      const week: DayCell[] = [];
+      let containsYear = false;
 
-      for (let weekday = 0; weekday < 7; weekday++) {
-        const dateStr = cursor.toISOString().split('T')[0];
-        const isInYear = cursor.getFullYear() === selectedYear;
+      for (let i = 0; i < 7; i++) {
+        const iso = cursor.toISOString().slice(0, 10);
+        const inside = cursor.getFullYear() === year;
 
-        if (isInYear) {
-          hasYearDays = true;
-          const month = cursor.getMonth();
-          if (!seenMonths.has(month)) {
-            monthLabels.push({
-              label: monthNames[month],
-              position: weekIndex,
-            });
-            seenMonths.add(month);
+        if (inside) {
+          containsYear = true;
+          const m = cursor.getMonth();
+          if (!addedMonths.has(m)) {
+            monthLabels.push({ name: MONTHS[m], weekIndex: weekPos });
+            addedMonths.add(m);
           }
         }
 
         week.push({
-          date: dateStr,
-          count: isInYear ? dataMap.get(dateStr) || 0 : -1,
-          isInYear,
+          date: iso,
+          value: inside ? countByDate.get(iso) ?? 0 : -1,
+          valid: inside,
         });
 
         cursor.setDate(cursor.getDate() + 1);
       }
 
-      if (hasYearDays) {
+      if (containsYear) {
         weeks.push(week);
-        weekIndex++;
-      } else if (weekIndex > 0) {
+        weekPos++;
+      } else if (weekPos > 0) {
         break;
       }
 
-      if (cursor.getFullYear() > selectedYear && weekIndex > 0) break;
+      if (cursor.getFullYear() > year && weekPos > 0) break;
     }
 
-    return {
-      weeks,
-      totalContributions: total,
-      monthLabels,
-    };
-  }, [contributionData, selectedYear]);
+    return { grid: weeks, total: sum, months: monthLabels };
+  }, [rawData, year]);
 
-  const formatTooltip = (cell: ContributionCell): string => {
-    if (!cell.isInYear) return '';
-    if (cell.count === 0) return `No contributions on ${cell.date}`;
-    if (cell.count === 1) return `1 contribution on ${cell.date}`;
-    return `${cell.count} contributions on ${cell.date}`;
+  const tooltipText = (cell: DayCell) => {
+    if (!cell.valid) return '';
+    if (cell.value === 0) return `No contributions on ${cell.date}`;
+    if (cell.value === 1) return `1 contribution on ${cell.date}`;
+    return `${cell.value} contributions on ${cell.date}`;
   };
 
-    const getColor = (count: number): string => {
-    if (count === -1) return '#161b22';
-    if (count === 0) return '#babec5';
-    if (count <= 3) return '#115432';
-    if (count <= 6) return '#537e67';
-    if (count <= 9) return '#469b58';
+  const cellColor = (value: number) => {
+    if (value === -1) return '#161b22';
+    if (value === 0) return '#babec5';
+    if (value <= 3) return '#115432';
+    if (value <= 6) return '#537e67';
+    if (value <= 9) return '#469b58';
     return '#40e05b';
   };
 
   return (
-    <div >
-      <div className="font-semibold text-[#56595d] text-base mb-4">
-        {totalContributions.toLocaleString()} contributions in {selectedYear}
+    <div>
+      <div className="mb-4 text-base font-semibold text-[#56595d]">
+        {total.toLocaleString()} contributions in {year}
       </div>
 
-      <div className="mb-3">
-        <div className="relative inline-block min-w-full">
-          <div className="flex mb-2 ml-[26px] h-4 relative">
-            {monthLabels.map((month) => (
-              <div
-                key={month.label}
-                className="text-[10px] text-[#56595d] font-medium absolute"
-                style={{
-                  left: `${month.position * 13}px`,
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',
-                }}
-              >
-                {month.label}
-              </div>
+      <div className="relative mb-3">
+        <div className="relative ml-[26px] mb-2 h-4">
+          {months.map(m => (
+            <span
+              key={m.name}
+              className="absolute text-[10px] font-medium text-[#56595d]"
+              style={{ left: m.weekIndex * 13 }}
+            >
+              {m.name}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex gap-[3px]">
+          <div className="mr-1 w-[22px] flex flex-col gap-[3px]">
+            <div className="h-[10px]" />
+            {SIDE_DAYS.map(d => (
+              <React.Fragment key={d}>
+                <div className="h-[10px] text-[9px] text-[#56595d] flex items-center">
+                  {d}
+                </div>
+                <div className="h-[10px]" />
+              </React.Fragment>
             ))}
           </div>
 
-          <div className="flex gap-[3px]">
-            <div className="flex flex-col gap-[3px] mr-1 w-[22px]">
-              <div className="h-[10px]"></div>
-              {displayedDayLabels.map((label) => (
-                <React.Fragment key={label}>
-                  <div className="h-[10px] text-[9px] text-[#56595d] flex items-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif' }}>
-                    {label}
-                  </div>
-                  <div className="h-[10px]"></div>
-                </React.Fragment>
+          {grid.map((week, i) => (
+            <div key={i} className="flex flex-col gap-[3px]">
+              {week.map(day => (
+                <div
+                  key={day.date}
+                  className="w-[10px] h-[10px] rounded-[1px]"
+                  style={{ backgroundColor: cellColor(day.value) }}
+                  title={tooltipText(day)}
+                />
               ))}
             </div>
-
-            {weeks.map((week, weekIdx) => (
-              <div key={`${weekIdx}-${week[0]?.date}`} className="flex flex-col gap-[3px]">
-                {week.map((day) => (
-                  <div
-                    key={day.date}
-                    className="w-[10px] h-[10px] rounded-[1px]"
-                    style={{ backgroundColor: getColor(day.count) }}
-                    title={formatTooltip(day)}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <a href="#" className="text-xs text-[#539bf5] hover:underline">
-          {contributionTexts.learnHow}
+      <div className="flex items-center justify-between text-xs">
+        <a className="text-[#539bf5] hover:underline" href="#">
+          {text.learnHow}
         </a>
-        <div className="flex items-center gap-2 text-xs text-[#7d8590]">
-          <span>{contributionTexts.less}</span>
+
+        <div className="flex items-center gap-2 text-[#7d8590]">
+          <span>{text.less}</span>
           <div className="flex gap-1">
-            <div className="w-[10px] h-[10px] bg-[#161b22] rounded-[2px]"></div>
-            <div className="w-[10px] h-[10px] bg-[#0e4429] rounded-[2px]"></div>
-            <div className="w-[10px] h-[10px] bg-[#006d32] rounded-[2px]"></div>
-            <div className="w-[10px] h-[10px] bg-[#26a641] rounded-[2px]"></div>
-            <div className="w-[10px] h-[10px] bg-[#39d353] rounded-[2px]"></div>
+            {['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'].map(c => (
+              <span key={c} className="w-[10px] h-[10px] rounded-[2px]" style={{ backgroundColor: c }} />
+            ))}
           </div>
-          <span>{contributionTexts.more}</span>
+          <span>{text.more}</span>
         </div>
       </div>
     </div>

@@ -33,6 +33,7 @@ Configuration Files:
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 16+ and npm
 
 ### Installation
@@ -75,20 +76,21 @@ npm run lint
 
 ## Technologies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| React | 18.3.1 | UI library |
-| React DOM | 18.3.1 | React rendering |
-| Vite | 5.4.21 | Build tool & dev server |
-| TypeScript | 5.7.2 | Type-safe JavaScript |
-| React Router DOM | 6.30.3 | Client-side routing |
-| Axios | 1.13.4 | HTTP client |
-| ESLint | 8.57.1 | Code quality |
-| @typescript-eslint | 7.13.0 | TypeScript ESLint support |
+| Package            | Version | Purpose                   |
+| ------------------ | ------- | ------------------------- |
+| React              | 18.3.1  | UI library                |
+| React DOM          | 18.3.1  | React rendering           |
+| Vite               | 5.4.21  | Build tool & dev server   |
+| TypeScript         | 5.7.2   | Type-safe JavaScript      |
+| React Router DOM   | 6.30.3  | Client-side routing       |
+| Axios              | 1.13.4  | HTTP client               |
+| ESLint             | 8.57.1  | Code quality              |
+| @typescript-eslint | 7.13.0  | TypeScript ESLint support |
 
 ## TypeScript Setup
 
 This project is fully configured with TypeScript:
+
 - All source files use `.tsx` extension for React components
 - Strict type checking enabled
 - Full IDE support and type inference
@@ -102,4 +104,3 @@ This project is fully configured with TypeScript:
 - `npm run preview` - Preview production build locally
 - `npm run type-check` - Run TypeScript type checking
 - `npm run lint` - Run ESLint and report issues
-

@@ -16,7 +16,7 @@ const SideProfile: React.FC = () => {
 
   return (
     <div className="w-full lg:w-[296px] flex-shrink-0">
-      <div className="sticky top-4" >
+      <div className="sticky top-4">
         <div className="relative mb-4">
           <img
             src={user.avatar_url}
@@ -61,14 +61,14 @@ const SideProfile: React.FC = () => {
         <div className="space-y-2 text-sm text-[#1f2328]">
           {user.company && (
             <div className="flex items-start gap-2">
-             <ComapnyIcon />
+              <ComapnyIcon />
               <span className="break-all">{user.company}</span>
             </div>
           )}
 
           {user.location && (
             <div className="flex items-start gap-2">
-              <LocationIcon />  
+              <LocationIcon />
               <span>{user.location}</span>
             </div>
           )}
@@ -87,7 +87,7 @@ const SideProfile: React.FC = () => {
 
           {user.blog && (
             <div className="flex items-start gap-2">
-            <BlogIcon />  
+              <BlogIcon />
               <a
                 href={
                   user.blog.startsWith("http")
@@ -117,14 +117,14 @@ const SideProfile: React.FC = () => {
             </div>
           )}
         </div>
-              <div className="w-full mt-1 h-[1px] bg-[#d1d9e0] "></div>
-      <div className="pt-4 text-sm ">
-        <h2 className="font-semibold">Achievemenst</h2>
-        <StartPerFormerIcon />
-      </div>
+        <div className="w-full mt-1 h-[1px] bg-[#d1d9e0] "></div>
+        <div className="pt-4 text-sm ">
+          <h2 className="font-semibold">Achievemenst</h2>
+          <StartPerFormerIcon />
+        </div>
       </div>
     </div>
-  ); 
+  );
 };
 
 export default SideProfile;

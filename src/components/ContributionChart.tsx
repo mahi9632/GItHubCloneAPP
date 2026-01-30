@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import profileConfig from '../config/profileConfig.json';
-import { useUserProfile } from '../context/UserProfileContext';
+import React, { useMemo } from "react";
+import profileConfig from "../config/profileConfig.json";
+import { useUserProfile } from "../context/UserProfileContext";
 
 type ChartProps = {
   selectedYear?: number;
@@ -17,8 +17,21 @@ type MonthMark = {
   weekIndex: number;
 };
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const SIDE_DAYS = ['Mon', 'Wed', 'Fri'];
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const SIDE_DAYS = ["Mon", "Wed", "Fri"];
 
 const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
   const { contributions } = useUserProfile();
@@ -31,7 +44,7 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
     const countByDate = new Map<string, number>();
     let sum = 0;
 
-    rawData.forEach(item => {
+    rawData.forEach((item) => {
       countByDate.set(item.date, item.count);
       sum += item.count;
     });
@@ -67,7 +80,7 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
 
         week.push({
           date: iso,
-          value: inside ? countByDate.get(iso) ?? 0 : -1,
+          value: inside ? (countByDate.get(iso) ?? 0) : -1,
           valid: inside,
         });
 
@@ -88,19 +101,19 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
   }, [rawData, year]);
 
   const tooltipText = (cell: DayCell) => {
-    if (!cell.valid) return '';
+    if (!cell.valid) return "";
     if (cell.value === 0) return `No contributions on ${cell.date}`;
     if (cell.value === 1) return `1 contribution on ${cell.date}`;
     return `${cell.value} contributions on ${cell.date}`;
   };
 
   const cellColor = (value: number) => {
-    if (value === -1) return '#161b22';
-    if (value === 0) return '#babec5';
-    if (value <= 3) return '#115432';
-    if (value <= 6) return '#537e67';
-    if (value <= 9) return '#469b58';
-    return '#40e05b';
+    if (value === -1) return "#161b22";
+    if (value === 0) return "#babec5";
+    if (value <= 3) return "#115432";
+    if (value <= 6) return "#537e67";
+    if (value <= 9) return "#469b58";
+    return "#40e05b";
   };
 
   return (
@@ -111,7 +124,7 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
 
       <div className="relative mb-3">
         <div className="relative ml-[26px] mb-2 h-4">
-          {months.map(m => (
+          {months.map((m) => (
             <span
               key={m.name}
               className="absolute text-[10px] font-medium text-[#56595d]"
@@ -125,7 +138,7 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
         <div className="flex gap-[3px]">
           <div className="mr-1 w-[22px] flex flex-col gap-[3px]">
             <div className="h-[10px]" />
-            {SIDE_DAYS.map(d => (
+            {SIDE_DAYS.map((d) => (
               <React.Fragment key={d}>
                 <div className="h-[10px] text-[9px] text-[#56595d] flex items-center">
                   {d}
@@ -137,7 +150,7 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
 
           {grid.map((week, i) => (
             <div key={i} className="flex flex-col gap-[3px]">
-              {week.map(day => (
+              {week.map((day) => (
                 <div
                   key={day.date}
                   className="w-[10px] h-[10px] rounded-[1px]"
@@ -158,9 +171,15 @@ const ContributionChart: React.FC<ChartProps> = ({ selectedYear }) => {
         <div className="flex items-center gap-2 text-[#7d8590]">
           <span>{text.less}</span>
           <div className="flex gap-1">
-            {['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'].map(c => (
-              <span key={c} className="w-[10px] h-[10px] rounded-[2px]" style={{ backgroundColor: c }} />
-            ))}
+            {["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"].map(
+              (c) => (
+                <span
+                  key={c}
+                  className="w-[10px] h-[10px] rounded-[2px]"
+                  style={{ backgroundColor: c }}
+                />
+              ),
+            )}
           </div>
           <span>{text.more}</span>
         </div>

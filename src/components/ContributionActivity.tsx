@@ -1,5 +1,4 @@
-import React from "react"; 
-import { GoLock } from "react-icons/go";
+import React from "react";
 
 import profileConfig from "../config/profileConfig.json";
 import GitMergeIcon from "../icons/GitMergeIcon";
@@ -14,7 +13,7 @@ const ContributionActivity: React.FC = () => {
   const privateContributions = mockData.privateContributions;
 
   return (
-    <div >
+    <div>
       <h2 className="text-[#56595d] font-semibold text-base">
         {texts.profilePage.contributionActivityTitle}
       </h2>
@@ -28,11 +27,10 @@ const ContributionActivity: React.FC = () => {
         </div>
 
         <div className="relative pl-6">
-
           <div className="relative pb-6 flex flex-row gap-2 items-center">
             <div className="h-[50px] w-[2px]  bg-[#d1d9e0]  "></div>
             <div className="absolute translate-x-[-45%] translate-y-[20%] top-[2px] bg-[#f6f8fa] p-1 z-10 rounded-full">
-              <GitMergeIcon/>
+              <GitMergeIcon />
             </div>
 
             <div className="flex items-start justify-between pl-4 w-full">
@@ -40,7 +38,10 @@ const ContributionActivity: React.FC = () => {
                 <span className="text-[#56595d] font-semibold">
                   {privateContributions.count} contributions
                 </span>
-                <span className="text-[#59636e]"> {texts.profilePage.privateRepoSuffix}</span>
+                <span className="text-[#59636e]">
+                  {" "}
+                  {texts.profilePage.privateRepoSuffix}
+                </span>
               </div>
               <div className="text-xs text-[#56595d] whitespace-nowrap ml-4">
                 {privateContributions.dateRange}

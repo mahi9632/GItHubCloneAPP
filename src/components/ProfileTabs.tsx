@@ -1,15 +1,9 @@
-import {
-  GoBook,
-  GoRepo,
-  GoProject,
-  GoPackage,
-  GoStar
-} from 'react-icons/go';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { GoBook, GoRepo, GoProject, GoPackage, GoStar } from "react-icons/go";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-import profileConfig from '../config/profileConfig.json';
-import { useUserProfile } from '../context/UserProfileContext';
+import profileConfig from "../config/profileConfig.json";
+import { useUserProfile } from "../context/UserProfileContext";
 
 const ProfileTabs: React.FC = () => {
   const { user } = useUserProfile();
@@ -21,30 +15,30 @@ const ProfileTabs: React.FC = () => {
       name: profileConfig.tabs.overview,
       path: `/profile/${username}`,
       icon: <GoBook size={16} />,
-      end: true
+      end: true,
     },
     {
       name: profileConfig.tabs.repositories,
       path: `/profile/${username}/repositories`,
       icon: <GoRepo size={16} />,
-      count: user?.public_repos
+      count: user?.public_repos,
     },
     {
       name: profileConfig.tabs.projects,
       path: `/profile/${username}/projects`,
-      icon: <GoProject size={16} />
+      icon: <GoProject size={16} />,
     },
     {
       name: profileConfig.tabs.packages,
       path: `/profile/${username}/packages`,
-      icon: <GoPackage size={16} />
+      icon: <GoPackage size={16} />,
     },
     {
       name: profileConfig.tabs.stars,
       path: `/profile/${username}/stars`,
       icon: <GoStar size={16} />,
-      count: user?.starred_count ?? 0
-    }
+      count: user?.starred_count ?? 0,
+    },
   ];
 
   return (
@@ -58,10 +52,11 @@ const ProfileTabs: React.FC = () => {
             className={({ isActive }) =>
               `flex items-center gap-2 px-2 py-2 border-b-2 text-sm transition-colors ${
                 isActive
-                  ? 'border-[#f78166] text-[#1f2328] font-semibold'
-                  : 'border-transparent text-[#1f2328] hover:font-semibold hover:border-[#6e7681]'
+                  ? "border-[#f78166] text-[#1f2328] font-semibold"
+                  : "border-transparent text-[#1f2328] hover:font-semibold hover:border-[#6e7681]"
               }`
-            }          >
+            }
+          >
             {tab.icon}
             <span>{tab.name}</span>
 

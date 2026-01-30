@@ -12,12 +12,7 @@
   "texts": {
     "activityOverview": {
       "title": "Activity overview",
-      "categories": [
-        "Commits",
-        "Code review",
-        "Issues",
-        "Pull requests"
-      ]
+      "categories": ["Commits", "Code review", "Issues", "Pull requests"]
     },
     "popularRepositories": {
       "title": "Popular repositories",
@@ -67,11 +62,7 @@
       "python-scripts",
       "data-viz"
     ],
-    "projects": [
-      "Project Alpha",
-      "Project Beta",
-      "Project Gamma"
-    ],
+    "projects": ["Project Alpha", "Project Beta", "Project Gamma"],
     "packages": [
       "@username/package-one",
       "@username/package-two",

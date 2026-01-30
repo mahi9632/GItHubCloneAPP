@@ -1,14 +1,14 @@
-
-import React from 'react';
-import PlotComponent from 'react-plotly.js';
-import type { Data } from 'plotly.js';
+import React from "react";
+import PlotComponent from "react-plotly.js";
+import type { Data } from "plotly.js";
 
 const Plot = PlotComponent as any;
-import profileConfig from '../config/profileConfig.json';
-import { ActivityBreakdown } from '../types/globalTypes';
+import profileConfig from "../config/profileConfig.json";
+import { ActivityBreakdown } from "../types/globalTypes";
 
 const ActivityOverview: React.FC = () => {
-  const activityData = profileConfig.mockData.activityBreakdown as ActivityBreakdown;
+  const activityData = profileConfig.mockData
+    .activityBreakdown as ActivityBreakdown;
   const categories = profileConfig.texts.activityOverview.categories;
   const values = [
     activityData.commits,
@@ -19,27 +19,30 @@ const ActivityOverview: React.FC = () => {
 
   const radarData: Partial<Data>[] = [
     {
-      type: 'scatterpolar',
+      type: "scatterpolar",
       r: values,
       theta: categories,
-      fill: 'toself',
-      fillcolor: 'rgba(46, 160, 67, 0.2)',
+      fill: "toself",
+      fillcolor: "rgba(46, 160, 67, 0.2)",
       line: {
-        color: '#2ea043',
+        color: "#2ea043",
         width: 2,
       },
       marker: {
-        color: '#2ea043',
+        color: "#2ea043",
         size: 6,
       },
-      hovertemplate: '<b>%{theta}</b><br>%{r} contributions<extra></extra>',
+      hovertemplate: "<b>%{theta}</b><br>%{r} contributions<extra></extra>",
     },
   ];
 
   return (
     <div className="flex gap-8 w-1/2 overflow-hidden">
       <div className="flex-1">
-        <div className="flex items-center justify-center" style={{ height: '280px' }}>
+        <div
+          className="flex items-center justify-center"
+          style={{ height: "280px" }}
+        >
           <Plot
             data={radarData}
             layout={{
@@ -57,13 +60,13 @@ const ActivityOverview: React.FC = () => {
                 angularaxis: {
                   tickfont: {
                     size: 11,
-                    color: '#7d8590',
+                    color: "#7d8590",
                     family:
                       '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',
                   },
-                  gridcolor: '#2ea043',
+                  gridcolor: "#2ea043",
                   gridwidth: 1,
-                  linecolor: 'rgba(0,0,0,0)',
+                  linecolor: "rgba(0,0,0,0)",
                   linewidth: 0,
                   rotation: 90,
                   showline: false,
@@ -71,10 +74,10 @@ const ActivityOverview: React.FC = () => {
               },
               showlegend: false,
               hoverlabel: {
-                bgcolor: '#1c2128',
-                bordercolor: '#30363d',
+                bgcolor: "#1c2128",
+                bordercolor: "#30363d",
                 font: {
-                  color: '#e6edf3',
+                  color: "#e6edf3",
                   size: 12,
                   family:
                     '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif',

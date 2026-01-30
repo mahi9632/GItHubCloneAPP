@@ -12,7 +12,15 @@ import { GoRepo } from "react-icons/go";
 
 const ProfilePage: React.FC = () => {
   const { username } = useParams<{ username: string }>();
-  const { fetchUserProfile, fetchContributionsByYear, loading, error, user, fetchPopularRepositories, repositories } = useUserProfile();
+  const {
+    fetchUserProfile,
+    fetchContributionsByYear,
+    loading,
+    error,
+    user,
+    fetchPopularRepositories,
+    repositories,
+  } = useUserProfile();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const { profilePage, activityOverview } = profileConfig.texts;
 
@@ -31,13 +39,16 @@ const ProfilePage: React.FC = () => {
 
   const yearOptions = useMemo(
     () => Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - i),
-    []
+    [],
   );
 
   // Prepare repositories to display (show up to 5 and count extras)
   const contribRepos = repositories || [];
   const displayRepos = contribRepos.slice(0, 5);
-  const extraReposCount = Math.max(0, contribRepos.length - displayRepos.length);
+  const extraReposCount = Math.max(
+    0,
+    contribRepos.length - displayRepos.length,
+  );
 
   if (loading) {
     return (
@@ -54,7 +65,9 @@ const ProfilePage: React.FC = () => {
     return (
       <div className="min-h-screen  flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[#f85149] text-xl mb-2">{profilePage.errorTitle}</p>
+          <p className="text-[#f85149] text-xl mb-2">
+            {profilePage.errorTitle}
+          </p>
           <p className="text-[#7d8590]">{error}</p>
         </div>
       </div>
@@ -96,28 +109,35 @@ const ProfilePage: React.FC = () => {
                     <div className="flex flex-row gap-2 text-sm items-center">
                       <span className="inline-flex items-center gap-2 text-sm">
                         <span className="leading-tight  flex flex-row">
-                        <GoRepo size={20} className="inline-block mr-1" /> 
-                         <span> Contributed{' '}
-                          {displayRepos.length > 0 ? (
-                            <>
-                              {displayRepos.slice(0, 3).map((repo, idx) => (
-                                <span key={repo.id}>
-                                  <a
-                                    href={repo.html_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-[#58a6ff] hover:underline"
-                                  >
-                                    {repo.name}
-                                  </a>
-                                  {idx < displayRepos.length - 1 ? ', ' : ''}
-                                </span>
-                              ))}
-                              {extraReposCount > 0 && <> and {extraReposCount} others</>}
-                            </>
-                          ) : (
-                            <span className="text-[#7d8590]">no public repositories</span>
-                          )}</span>
+                          <GoRepo size={20} className="inline-block mr-1" />
+                          <span>
+                            {" "}
+                            Contributed{" "}
+                            {displayRepos.length > 0 ? (
+                              <>
+                                {displayRepos.slice(0, 3).map((repo, idx) => (
+                                  <span key={repo.id}>
+                                    <a
+                                      href={repo.html_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[#58a6ff] hover:underline"
+                                    >
+                                      {repo.name}
+                                    </a>
+                                    {idx < displayRepos.length - 1 ? ", " : ""}
+                                  </span>
+                                ))}
+                                {extraReposCount > 0 && (
+                                  <> and {extraReposCount} others</>
+                                )}
+                              </>
+                            ) : (
+                              <span className="text-[#7d8590]">
+                                no public repositories
+                              </span>
+                            )}
+                          </span>
                         </span>
                       </span>
                     </div>
@@ -132,10 +152,11 @@ const ProfilePage: React.FC = () => {
                   <button
                     key={year}
                     onClick={() => setSelectedYear(year)}
-                    className={`px-4 py-2 text-sm rounded-md transition-colors ${selectedYear === year
+                    className={`px-4 py-2 text-sm rounded-md transition-colors ${
+                      selectedYear === year
                         ? "bg-[#1f6feb] text-white font-semibold"
                         : "bg-transparent text-[#7d8590] hover:bg-[#21262d] hover:text-[#e6edf3]"
-                      }`}
+                    }`}
                   >
                     {year}
                   </button>

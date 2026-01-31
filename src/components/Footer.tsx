@@ -3,7 +3,7 @@ import { AiFillGithub } from "react-icons/ai";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="fixed bottom-0 left-0 w-full">
+    <footer >
       <nav
         style={{
           marginTop: "40px",

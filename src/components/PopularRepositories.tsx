@@ -1,3 +1,4 @@
+import React from "react";
 import { useUserProfile } from "../context/UserProfileContext";
 import profileConfig from "../config/profileConfig.json";
 import RepoIcon from "../icons/RepoIcon";

@@ -1,4 +1,4 @@
-const PeoplesIcon = ({}: {}) => (
+const PeoplesIcon = () => (
   <svg
     aria-hidden="true"
     height="16"

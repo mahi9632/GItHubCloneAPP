@@ -33,7 +33,7 @@ const SideProfile: React.FC = () => {
         </div>
         <div className="flex gap-2 mb-4">
           {profileConfig.showFollowButton && (
-            <button className="flex-1 px-3 py-[5px] bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] rounded-md text-sm font-medium text-[#e6edf3] transition-colors">
+            <button className="flex-1 px-3 py-[5px] bg-[#f3f6f8] hover:bg-[#e5e7eb]  rounded-md text-sm font-medium  transition-colors">
               Follow
             </button>
           )}

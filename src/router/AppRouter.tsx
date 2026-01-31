@@ -5,6 +5,7 @@ import profileConfig from "../config/profileConfig.json";
 import TopNavBar from "../components/TopNavBar";
 import ProfilePage from "../pages/ProfilePage";
 import HocPageLayout from "../pages/HocPageLayout";
+import Footer from "../components/Footer";
 
 const AppRouter: React.FC = () => {
   const createPageElement = (
@@ -53,6 +54,7 @@ const AppRouter: React.FC = () => {
             <Route path="*" element={createPageElement("Not Found")} />
           </Routes>
         </div>
+        <Footer />
       </UserProfileProvider>
     </BrowserRouter>
   );

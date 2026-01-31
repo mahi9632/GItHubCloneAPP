@@ -164,6 +164,15 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
             <ContributionActivity />
+            <div className="mt-4 text-xs text-[#59636e]">
+              Seeing something unexpected? Take a look at the{" "}
+              <a
+                href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-your-profile-readme"
+                className="text-[#0969da] underline"
+              >
+                GitHub profile guide.
+              </a>
+            </div>
           </div>
         </div>
       </div>

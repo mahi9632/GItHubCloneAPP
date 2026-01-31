@@ -1,7 +1,8 @@
 import type { User, ContributionData } from "../types/globalTypes";
 
 const GITHUB_API_URL = "https://api.github.com/users";
-const CONTRIBUTIONDATA_API_URL = "https://github-contributions-api.jogruber.de/v4";
+const CONTRIBUTIONDATA_API_URL =
+  "https://github-contributions-api.jogruber.de/v4";
 
 export const fetchUser = async (userName: string): Promise<User> => {
   const response = await fetch(`${GITHUB_API_URL}/${userName}`);

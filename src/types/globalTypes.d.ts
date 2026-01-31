@@ -81,6 +81,7 @@ export interface Repository {
   watchers_count: number;
   visibility: string;
   language: string;
+  full_name?: string;
 }
 
 export interface MockRepository {

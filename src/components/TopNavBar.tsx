@@ -76,7 +76,7 @@ const TopNavBar: React.FC = () => {
             {user && (
               <div className="hidden md:flex items-center ml-4">
                 <Link
-                  to={`/${user.login}`}
+                  to={`/`}
                   className="flex items-center text-[#1f2328] font-medium hover:underline"
                 >
                   <span>{user.login}</span>

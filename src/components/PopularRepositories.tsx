@@ -39,7 +39,7 @@ const PopularRepositories: React.FC = () => {
               </span>
             </div>
 
-            {repo.fork && repo.forks_url && (
+            {repo.fork && repo.full_name && (
               <div className="text-xs flex items-center gap-1  text-[#57606a] mb-2">
                 <ForkIcon />
                 <span>
@@ -48,7 +48,7 @@ const PopularRepositories: React.FC = () => {
                     href={repo.forks_url}
                     className="text-[#0969da] hover:underline"
                   >
-                    {repo.forks_url}
+                    {repo.full_name}
                   </a>
                 </span>
               </div>
